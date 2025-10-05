@@ -23,20 +23,28 @@ pipeline {
             }
         }
 
-        stage('Moving the Python File') {
+        stage('Move and Run Python App') {
             steps {
                 sh '''
-                    echo "Moving Python file..."
+                    echo "Moving Python app files..."
                     sudo mkdir -p /opt/python-folder
                     sudo cp /home/ec2-user/jenkins/workspace/new111/web.py /opt/python-folder/web.py
-                    echo "Move complete!"
+                    
+                    echo "Move complete."
+                    
+                    cd /opt/python-folder
+                    if [ -f requirements.txt ]; then
+                        echo "Installing dependencies..."
+                        sudo pip3 install -r requirements.txt
+                    else
+                        echo "No requirements.txt found — skipping dependency install."
+                    fi
 
-                    sh 'cd /opt/python && sudo pip install -r requirements.txt'
-                    sh 'nohup python3 /opt/python/web.py'
-
+                    echo "Starting Flask app..."
+                    nohup python3 /opt/python-folder/web.py > /opt/python-folder/flask.log 2>&1 &
+                    echo "Flask app started. Check /opt/python-folder/flask.log for output."
                 '''
             }
         }
-        
     }
 }
