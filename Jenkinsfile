@@ -42,6 +42,13 @@ pipeline {
 
                     echo "Starting Flask app..."
                     nohup python3 /opt/python-folder/web.py > /opt/python-folder/flask.log 2>&1 &
+                    cd /opt/python-folder
+
+# Kill any old Flask process (optional, prevents port conflict)
+pkill -f web.py || true
+
+# Start Flask properly
+nohup python3 web.py > flask.log 2>&1 &
                     echo "Flask app started. Check /opt/python-folder/flask.log for output."
                 '''
             }
