@@ -30,8 +30,13 @@ pipeline {
                     sudo mkdir -p /opt/python-folder
                     sudo cp /home/ec2-user/jenkins/workspace/new111/web.py /opt/python-folder/web.py
                     echo "Move complete!"
+
+                    sh 'cd /opt/python && sudo pip install -r requirements.txt'
+                    sh 'nohup python3 /opt/python/web.py'
+
                 '''
             }
         }
+        
     }
 }
