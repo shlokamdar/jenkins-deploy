@@ -22,5 +22,9 @@ pipeline {
                 sh "pwd"
             }
         }
+        stage('moving the python file')
+        steps{
+            sh "cp /home/ec2-user/jenkins/workspace/new111 /opt/python-folder/web.py"
+        }
     }
 }
